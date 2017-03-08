@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block mainbody %}
+    {% if  movie %}
+        <img border="0" src="{{ movie.poster }}" alt="Cannot load photo, sorry!" width="300" height="500">
+        <h1>{{ movie.title }}</h1>
+        <p>Year: {{ movie.year }}</p>
+        <p>Release Date: {{ movie.date }}</p>
+        <p>Rating: {{ movie.rate }}</p>
+        <p><a href="http://www.imdb.com/title/{{ movie.movieid }}" target="_self">See in IMDB</a></p>
+        <p><a href="{{ movie.trailer }}" target="_self">Play Trailer</a></p>
+        <p>Plot Summary:"{{ movie.plot }}"</p>
+        <h2>Main actors in {{ movie.title }}:</h2>
+        <hr>
+    {% endif %}
+
+    {% if  search %}
+        <h2>{{ number }} result(s) with "{{ search }}":</h2>
+        <hr>
+    {% endif %}
+
+    {% for item in items %}
+        <h3><a href="/movie/actor_detail/{{ item.actorid }}" target="_self">{{ item.name }}</a></h3>
+        <img border="0" src="{{ item.photo }}" alt="Cannot load photo, sorry!" width="200" height="280">
+        <hr>
+    {% endfor %}
+
+{% endblock %}

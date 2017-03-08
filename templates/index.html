@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+</head>
+<body>
+<a href="/movie/movie_all/">movie_list</a>
+<br/>
+<a href="/movie/actor_all/">actor_list</a>
+<br/>
+<a href="/user/login/">Login</a>
+<form action="/" method="post">
+    {% csrf_token %}
+    <input type="text" name="title"/>
+    <input type="submit" name="Search Movie" value="Search Movie"/>
+    <input type="submit" name="Search Actor" value="Search Actor"/>
+</form>
+</body>
+</html>
