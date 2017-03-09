@@ -5,16 +5,27 @@
     <title>Welcome</title>
 </head>
 <body>
+
+{% if user.is_authenticated %}
+    <p>Welcome, {{ username }} <a href="/user/logout/">Logout</a></p>
+{% else %}
+    {% if message %}
+        <p style="color:red;">{{ message }}</p>
+    {% endif %}
+    <p>Guest, please <a href="/user/login/">Login</a> or <a href="/user/register/">Register</a></p>
+{% endif %}
+
 <a href="/movie/movie_all/">movie_list</a>
 <br/>
 <a href="/movie/actor_all/">actor_list</a>
 <br/>
-<a href="/user/login/">Login</a>
+
 <form action="/" method="post">
     {% csrf_token %}
     <input type="text" name="title"/>
     <input type="submit" name="Search Movie" value="Search Movie"/>
     <input type="submit" name="Search Actor" value="Search Actor"/>
 </form>
+
 </body>
 </html>
