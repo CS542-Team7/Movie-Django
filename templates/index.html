@@ -7,7 +7,7 @@
 <body>
 
 {% if user.is_authenticated %}
-    <p>Welcome, {{ username }} <a href="/user/logout/">Logout</a></p>
+    <p>Welcome, {{ username }}  <a href="/movie/favorite/" target="_self">Favorite List</a>  <a href="/user/logout/">Logout</a></p>
 {% else %}
     {% if message %}
         <p style="color:red;">{{ message }}</p>

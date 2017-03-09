@@ -4,6 +4,14 @@
     {% if  movie %}
         <img border="0" src="{{ movie.poster }}" alt="Cannot load photo, sorry!" width="300" height="500">
         <h1>{{ movie.title }}</h1>
+
+        {% if  user.is_authenticated %}
+            <form role="form" action="" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Add to Favorite" name="Add">
+            </form>
+        {% endif %}
+
         <p>Year: {{ movie.year }}</p>
         <p>Release Date: {{ movie.date }}</p>
         <p>Rating: {{ movie.rate }}</p>
