@@ -1,8 +1,9 @@
 from django.shortcuts import render
-
+from django.views.decorators.csrf import csrf_protect
 from movie.models import *
 
 
+@csrf_protect
 def movie_detail(request):
     s = str(request.get_raw_uri()).split('/')
     for index in range(len(s)):
@@ -12,7 +13,6 @@ def movie_detail(request):
 
     if request.POST:
         history = Favorite.objects.filter(movieid_id=movie_id, username=request.user.get_username())
-        print(history)
         if len(history) == 0:
             new_record = Favorite(movieid_id=movie_id, username=request.user.get_username())
             new_record.save()
@@ -49,12 +49,12 @@ def actor_detail(request):
 
 def movie_all(request):
     movies = Movie.objects.all()
-    return render(request, 'movie_list.html', {'items': movies})
+    return render(request, 'movie_list.html', {'items': movies, 'number': len(movies)})
 
 
 def actor_all(request):
     actors = Actor.objects.all()
-    return render(request, 'actor_list.html', {'items': actors})
+    return render(request, 'actor_list.html', {'items': actors, 'number': len(actors)})
 
 
 def movie_search(request):
@@ -77,6 +77,7 @@ def actor_search(request):
     return render(request, 'actor_list.html', {'items': actors, 'search': pattern, 'number': len(actors)})
 
 
+@csrf_protect
 def favorite(request):
     if request.POST:
         s = str(request.get_raw_uri()).split('/')

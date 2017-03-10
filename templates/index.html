@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Welcome</title>
 </head>
-<body>
+<body style="background-color:#ffffe6;">
 
 {% if user.is_authenticated %}
     <p>Welcome, {{ username }}  <a href="/movie/favorite/" target="_self">Favorite List</a>  <a href="/user/logout/">Logout</a></p>
@@ -26,6 +26,8 @@
     <input type="submit" name="Search Movie" value="Search Movie"/>
     <input type="submit" name="Search Actor" value="Search Actor"/>
 </form>
-
+<br/>
+{% load static %}
+<img border="0" src="{% static "movie.jpg" %}" width="1280" height="720">
 </body>
 </html>

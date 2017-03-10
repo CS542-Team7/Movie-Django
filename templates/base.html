@@ -3,12 +3,12 @@
     <title>Movie</title>
 </head>
 
-<body>
+<body style="background-color:#e6ffe6;">
 <a href="/">Home Page</a>
 {% if user.is_authenticated %}
     <p>Welcome, {{ user }} <a href="/movie/favorite/" target="_self">Favorite List</a></p>
 {% endif %}
-<h1 style="color:orange;">Life is like a movie, write your own ending.</h1>
+<h1 style="font-family:arial;font-style:italic;color:orange;background-color:#ffffcc;">Life is like a movie, write your own ending.</h1>
 <hr><hr>
 {% block mainbody %}
     <p>original from base.html</p>
