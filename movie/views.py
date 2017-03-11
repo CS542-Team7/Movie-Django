@@ -48,8 +48,31 @@ def actor_detail(request):
 
 
 def movie_all(request):
+    s = str(request.get_raw_uri()).split('/')
+    for index in range(len(s)):
+        if s[index] == 'movie_all':
+            num = s[index + 1]
+            break
     movies = Movie.objects.all()
-    return render(request, 'movie_list.html', {'items': movies, 'number': len(movies)})
+    list = []
+    for item in movies:
+        list.append(item)
+    print(list)
+    page = len(movies) // 10
+    if (len(movies) / 10 - len(movies) // 10) > 0:
+        page += 1
+    pages = []
+    for index in range(page):
+        pages.append(index + 1)
+    print(pages)
+    result = []
+    num = int(num)
+    for index in range(len(list)):
+        if index >= (num - 1) * 10:
+            result.append(list[index])
+        if index > num * 10:
+            break
+    return render(request, 'movie_list.html', {'items': result, 'number': len(movies), 'pages': pages})
 
 
 def actor_all(request):
@@ -63,6 +86,8 @@ def movie_search(request):
         if s[index] == 'movie_search':
             pattern = s[index + 1]
             break
+    pattern = pattern.replace("%20", " ")
+    print(pattern)
     movies = Movie.objects.filter(title__contains=pattern)
     return render(request, 'movie_list.html', {'items': movies, 'search': pattern, 'number': len(movies)})
 

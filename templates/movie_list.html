@@ -19,4 +19,10 @@
         <hr>
     {% endfor %}
 
+    {% for page in pages %}
+        <a href="/movie/movie_all/{{ page }}" target="_self">{{ page }}</a>
+    {% endfor %}
+
+
+
 {% endblock %}
