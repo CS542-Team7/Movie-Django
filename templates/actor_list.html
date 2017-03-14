@@ -33,4 +33,17 @@
         <hr>
     {% endfor %}
 
+     <p>You are in the {{ current_page }} page, {{ page_number }} pages in total</p>
+    {% if last_page %}
+        <a href="/movie/actor_all/{{ last_page }}" target="_self"><<<</a>
+    {% endif %}
+
+    {% for page in pages %}
+        <a href="/movie/actor_all/{{ page }}" target="_self">{{ page }}</a>
+    {% endfor %}
+
+    {% if next_page %}
+        <a href="/movie/actor_all/{{ next_page }}" target="_self">>>></a>
+    {% endif %}
+
 {% endblock %}

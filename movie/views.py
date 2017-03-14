@@ -51,33 +51,53 @@ def movie_all(request):
     s = str(request.get_raw_uri()).split('/')
     for index in range(len(s)):
         if s[index] == 'movie_all':
-            num = s[index + 1]
+            page_num = int(s[index + 1])
             break
     movies = Movie.objects.all()
-    list = []
+    movie_list = []
     for item in movies:
-        list.append(item)
-    print(list)
+        movie_list.append(item)
     page = len(movies) // 10
     if (len(movies) / 10 - len(movies) // 10) > 0:
         page += 1
     pages = []
     for index in range(page):
         pages.append(index + 1)
-    print(pages)
-    result = []
-    num = int(num)
-    for index in range(len(list)):
-        if index >= (num - 1) * 10:
-            result.append(list[index])
-        if index > num * 10:
-            break
-    return render(request, 'movie_list.html', {'items': result, 'number': len(movies), 'pages': pages})
+    result = movie_list[10 * (page_num - 1):10 * page_num]
+    data = {'items': result, 'number': len(movies), 'pages': pages, 'current_page': page_num, 'next_page': page_num + 1,
+            'last_page': page_num - 1, 'page_number': page}
+    if page_num == 1:
+        del data['last_page']
+    if page_num == page:
+        del data['next_page']
+
+    return render(request, 'movie_list.html', data)
 
 
 def actor_all(request):
+    s = str(request.get_raw_uri()).split('/')
+    for index in range(len(s)):
+        if s[index] == 'actor_all':
+            page_num = int(s[index + 1])
+            break
     actors = Actor.objects.all()
-    return render(request, 'actor_list.html', {'items': actors, 'number': len(actors)})
+    actor_list = []
+    for item in actors:
+        actor_list.append(item)
+    page = len(actors) // 10
+    if (len(actors) / 10 - len(actors) // 10) > 0:
+        page += 1
+    pages = []
+    for index in range(page):
+        pages.append(index + 1)
+    result = actor_list[10 * (page_num - 1):10 * page_num]
+    data = {'items': result, 'number': len(actors), 'pages': pages, 'current_page': page_num, 'next_page': page_num + 1,
+            'last_page': page_num - 1, 'page_number': page}
+    if page_num == 1:
+        del data['last_page']
+    if page_num == page:
+        del data['next_page']
+    return render(request, 'actor_list.html', data)
 
 
 def movie_search(request):
