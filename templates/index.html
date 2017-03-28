@@ -3,31 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
+    <link href="css/navbootstrap.min.css" rel="stylesheet">
+
 </head>
 <body style="background-color:#ffffe6;">
-
-{% if user.is_authenticated %}
-    <p>Welcome, {{ username }}  <a href="/movie/favorite/" target="_self">Favorite List</a>  <a href="/user/logout/">Logout</a></p>
-{% else %}
-    {% if message %}
-        <p style="color:red;">{{ message }}</p>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Moviespy</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
+            <div class="form-group">
+              <input type="text" placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+            <button type="submit" class="btn btn-success">Sign up</button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ username }}  <a href="/movie/favorite/" target="_self">Favorite List</a>  <a href="/user/logout/">Logout</a></p>
+    {% else %}
+        {% if message %}
+            <p style="color:red;">{{ message }}</p>
+        {% endif %}
+        <p>Guest, please <a href="/user/login/">Login</a> or <a href="/user/register/">Register</a></p>
     {% endif %}
-    <p>Guest, please <a href="/user/login/">Login</a> or <a href="/user/register/">Register</a></p>
-{% endif %}
 
-<a href="/movie/movie_all/1">movie_list</a>
-<br/>
-<a href="/movie/actor_all/1">actor_list</a>
-<br/>
+    <a href="/movie/movie_all/1">movie_list</a>
+    <br/>
+    <a href="/movie/actor_all/1">actor_list</a>
+    <br/>
 
-<form action="/" method="post">
-    {% csrf_token %}
-    <input type="text" name="title"/>
-    <input type="submit" name="Search Movie" value="Search Movie"/>
-    <input type="submit" name="Search Actor" value="Search Actor"/>
-</form>
-<br/>
-{% load static %}
-<img border="0" src="{% static "movie.jpg" %}" width="1280" height="720">
+    <form action="/" method="post">
+        {% csrf_token %}
+        <input type="text" name="title"/>
+        <input type="submit" name="Search Movie" value="Search Movie"/>
+        <input type="submit" name="Search Actor" value="Search Actor"/>
+    </form>
+    <br/>
+    {% load static %}
+    <img border="0" src="{% static "movie.jpg" %}" width="1280" height="720">
 </body>
 </html>
