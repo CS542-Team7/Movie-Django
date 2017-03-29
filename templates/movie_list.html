@@ -1,17 +1,15 @@
 {% extends "base.html" %}
 
 {% block mainbody %}
-    {% if actor %}
-        <img border="0" src="{{ actor.photo }}" alt="Cannot load photo, sorry!" width="350" height="500">
-        <h1>{{ actor.name }}</h1>
-        <p><a href="http://www.imdb.com/name/{{ actor.actorid }}" target="_self">See in IMDB</a></p>
-        <h2>{{ actor.name }} in the following movie(s):</h2>
+
+    {% if object %}
+        <img border="0" src="{{ object.photo }}" alt="Cannot load photo, sorry!" width="350" height="500">
+        <h1>{{ object.name }}</h1>
+        <p><a href="http://www.imdb.com/name/{{ object.actorid }}" target="_self">See in IMDB</a></p>
+        <h2>{{ object.name }} in the following movie(s):</h2>
         <hr>
     {% endif %}
 
-    {% if  search %}
-        <h2>{{ number }} movie(s) with "{{ search }}":</h2>
-    {% endif %}
 
     {% for item in items %}
         <h2><a href="/movie/movie_detail/{{ item.movieid }}" target="_self">{{ item.title }}</a></h2>

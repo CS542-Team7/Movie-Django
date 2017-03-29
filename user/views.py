@@ -7,7 +7,6 @@ from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 @csrf_protect
 def user_login(request):
-    print(request)
     if request.POST:
         username = password = ''
         username = request.POST.get('username')

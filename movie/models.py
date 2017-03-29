@@ -14,6 +14,10 @@ class Movie(models.Model):
     def __str__(self):
         return self.movieid + '|' + self.title
 
+    @staticmethod
+    def get_name():
+        return 'movie'
+
 
 class Actor(models.Model):
     actorid = models.CharField(max_length=20, primary_key=True)
@@ -22,6 +26,10 @@ class Actor(models.Model):
 
     def __str__(self):
         return self.actorid + '|' + self.name
+
+    @staticmethod
+    def get_name():
+        return 'actor'
 
 
 class Act(models.Model):
