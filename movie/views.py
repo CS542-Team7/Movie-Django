@@ -107,19 +107,34 @@ def movie_search(request):
             pattern = s[index + 1]
             break
     pattern = pattern.replace("%20", " ")
-    print(pattern)
     movies = Movie.objects.filter(title__contains=pattern)
     return render(request, 'movie_list.html', {'items': movies, 'search': pattern, 'number': len(movies)})
 
 
 def actor_search(request):
+    print(request)
     s = str(request.get_raw_uri()).split('/')
     for index in range(len(s)):
         if s[index] == 'actor_search':
             pattern = s[index + 1]
             break
+    pattern = pattern.replace("%20", " ")
+    print(pattern)
     actors = Actor.objects.filter(name__contains=pattern)
     return render(request, 'actor_list.html', {'items': actors, 'search': pattern, 'number': len(actors)})
+
+
+def search(request):
+
+    s = str(request.get_raw_uri()).split('/')
+    for index in range(len(s)):
+        if s[index] == 'search':
+            pattern = s[index + 1]
+            break
+    pattern = pattern.replace("%20", " ")
+    movies = Movie.objects.filter(title__contains=pattern)
+    actors = Actor.objects.filter(name__contains=pattern)
+    return render(request, 'searchresult.html', {'items1': movies, 'search1': pattern, 'number1': len(movies), 'items2': actors, 'search2': pattern, 'number2': len(actors)})
 
 
 @csrf_protect

@@ -11,6 +11,9 @@ def index(request):
         if request.POST.get('Search Actor'):
             content = request.POST.get('title')
             return redirect('/movie/actor_search/' + content)
+        if request.POST.get('Search'):
+            content = request.POST.get('title')
+            return redirect('/movie/search/' + content)
     else:
         data = {}
         if request.user.is_authenticated():

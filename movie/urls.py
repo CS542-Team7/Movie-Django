@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^actor_detail/', views.actor_detail, name='actor_detail'),
     url(r'^movie_search', views.movie_search, name='movie_search'),
     url(r'^actor_search', views.actor_search, name='actor_search'),
+    url(r'^search', views.search, name='search'),
     url(r'^favorite/', views.favorite, name='favorite'),
 ]

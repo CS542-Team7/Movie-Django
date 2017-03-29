@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 @csrf_protect
 def user_login(request):
+    print(request)
     if request.POST:
         username = password = ''
         username = request.POST.get('username')
@@ -15,9 +16,9 @@ def user_login(request):
         if user is not None and user.is_active:
             print("User Login:  Username:" + username + '    Password:' + password)
             login(request, user)
-            return render(request, 'index.html', {'username': username})
+            return render(request, 'base.html', {'username': username})
         else:
-            return render(request, 'index.html', {'message': 'Username or Password wrong!'})
+            return render(request, 'base.html', {'message': 'Username or Password wrong!'})
     else:
         return render(request, 'login.html')
 
@@ -33,9 +34,9 @@ def user_register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
-            return render(request, 'index.html', {'message': 'Registered successfully, congratulations! Please login.'})
+            return render(request, 'base.html', {'message': 'Registered successfully, congratulations! Please login.'})
         else:
-            return render(request, 'index.html', {'message': 'Invalid input!'})
+            return render(request, 'base.html', {'message': 'Invalid input!'})
     else:
         form = UserCreationForm()
         return render(request, "register.html", {'form': form})

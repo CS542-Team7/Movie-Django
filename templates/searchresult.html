@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block mainbody %}
+    {% if  search1 %}
+        <h2>{{ number1 }} movie(s) with "{{ search1 }}":</h2>
+        <hr>
+    {% endif %}
+
+    {% for item in items1 %}
+        <h2><a href="/movie/movie_detail/{{ item.movieid }}" target="_self">{{ item.title }}</a></h2>
+        <img border="0" src="{{ item.poster }}" alt="Cannot load photo, sorry!" width="200" height="320">
+        <hr>
+    {% endfor %}
+
+    {% if  search2 %}
+        <h2>{{ number2 }} actor(s) with "{{ search2 }}":</h2>
+        <hr>
+    {% endif %}
+
+    {% for item in items2 %}
+        <h3><a href="/movie/actor_detail/{{ item.actorid }}" target="_self">{{ item.name }}</a></h3>
+        <img border="0" src="{{ item.photo }}" alt="Cannot load photo, sorry!" width="200" height="280">
+        <hr>
+    {% endfor %}
+{% endblock %}
