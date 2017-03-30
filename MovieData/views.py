@@ -19,7 +19,3 @@ def index(request):
         if request.user.is_authenticated():
             data = {'username': request.user.get_username()}
         return render(request, 'base.html', data)
-
-
-def not_found(request):
-    return render(request, '404.html')

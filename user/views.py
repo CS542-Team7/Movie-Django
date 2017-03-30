@@ -19,7 +19,7 @@ def user_login(request):
         else:
             return render(request, 'base.html', {'message': 'Username or Password wrong!'})
     else:
-        return render(request, 'login.html')
+        return render(request, '404.html')
 
 
 def user_logout(request):
@@ -30,12 +30,12 @@ def user_logout(request):
 @csrf_protect
 def user_register(request):
     if request.method == 'POST':
+        print(request.body)
         form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
             return render(request, 'base.html', {'message': 'Registered successfully, congratulations! Please login.'})
         else:
-            return render(request, 'base.html', {'message': 'Invalid input!'})
+            return render(request, 'register.html', {'error': 'Invalid input!', 'form': UserCreationForm()})
     else:
-        form = UserCreationForm()
-        return render(request, "register.html", {'form': form})
+        return render(request, "register.html", {'form': UserCreationForm()})

@@ -42,13 +42,8 @@ def whole_list(request, model, page):
         total_page += 1
     if page > total_page:
         return render(request, '404.html')
-    pages = []
-    for index in range(total_page):
-        pages.append(index + 1)
-    if page != total_page:
-        end = 10 * page
-    else:
-        end = len(objects)
+    pages = [x + 1 for x in range(total_page)]
+    end = 10 * page if page != total_page else len(objects)
     result = objects[10 * (page - 1):end]
     data = {'items': result, 'number': len(objects), 'pages': pages, 'current_page': page, 'next_page': page + 1,
             'last_page': page - 1, 'page_number': total_page}
