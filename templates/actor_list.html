@@ -12,14 +12,88 @@
             </form>
         {% endif %}
 
+{#        <!-- Layer -->#}
+        <div class = "Layer"></div>
+
         <p>Year: {{ object.year }}</p>
         <p>Release Date: {{ object.date }}</p>
         <p>Rating: {{ object.rate }}</p>
         <p><a href="http://www.imdb.com/title/{{ object.movieid }}" target="_blank">See in IMDB</a></p>
-         <p id="Trailer:"> Trailer</p>
-        <video id="playTrailer" width="320" height="240" controls>
-        <source src="{{ object.trailer }}" type="video/mp4">
-        </video>
+        <span class="click_Show"> <button class="button_trailer">Trailer</button></span>
+
+
+        <div id="TrailerWindow">
+            <div id="title">{{ object.title }} <a href="#" class="close">close</a></div>
+            <video width="600" height="350" controls>
+                <source src="{{ object.trailer }}" type="video/mp4">
+            </video>
+        </div>
+
+        <script type="text/javascript">
+            $(".click_Show").click(function(){
+                $(".Layer").show();//show layer
+                $("#TrailerWindow").show();//show videoWindow
+
+                tm();
+            });
+
+            $(window).resize(function(){
+                tm();
+            });
+
+            function tm(){
+                var _left = ($(window).width() - $("#TrailerWindow").width())/2;//Get distance of left
+                var _top = ($(window).height() - $("#TrailerWindow").height())/2;//Get distance of top
+                $("#TrailerWindow").css({left:_left,top:_top});
+            }
+
+            $("a.close").click(function(){
+                $("#TrailerWindow").hide();//hide
+                $(".Layer").hide();//hide
+            });
+        </script>
+
+        <!--Drag-->
+        <script type="text/javascript">
+            window.onload = function(){
+                init(document.getElementById("title"));
+            };
+
+            var l = 0, t=0,x=0, y=0;
+            var isOver = false;
+            var zindex = 99999;
+            function init(titleDom){
+                var thisDom = titleDom;
+                var parentDom = thisDom.parentNode;
+                titleDom.onmousedown = function(event){
+                    var e = event || window.event;
+                    x = e.clientX;
+                    y = e.clientY;
+                    l = parseInt(parentDom.offsetLeft);
+                    t = parseInt(parentDom.offsetTop);
+                    isOver = true;
+                    zindex++;
+                    parentDom.style.zIndex = zindex;
+                    document.onmousemove = function(event){
+                        if(isOver){
+                            var e = event || window.event;
+                            var newLeft = l + e.clientX - x;
+                            var newTop = t + e.clientY - y;
+                            parentDom.style.left = newLeft+"px";
+                            parentDom.style.top = newTop+"px";
+
+                        }
+                    };
+                    document.onmouseup=function(event){
+                        if(isOver){
+                            isOver = false;
+                        }
+                    };
+                };
+            }
+        </script>
+
+
         <p>Plot Summary:"{{ object.plot }}"</p>
         <h2>Main actors in {{ object.title }}:</h2>
         <hr>
@@ -47,3 +121,6 @@
     {% endif %}
 
 {% endblock %}
+
+{#<iframe id="TrailerWindow" name="screen" src="{{ object.trailer }}" height="430" width="100%"  frameborder="0" marginheight="0" marginwidth="0">#}
+{#        </iframe>#}

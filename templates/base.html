@@ -12,6 +12,24 @@
     <script src="{% static "js/bootstrap.min.js.download"%}" ></script>
     <link href="{% static "css/font-awesome.min.css"%}" rel="stylesheet">
     <style type="text/css">
+        #TrailerWindow{width:600px; height:350px;box-shadow: 0px 0px 10px #000;position:absolute; z-index: 101; display: none;}
+        #TrailerWindow #title{height:50px; background:#000; color:#fff;
+            font-size:30px;text-indent: 35px;line-height:50px;cursor:move;}
+        #TrailerWindow #title a{width:17px; height:18px; background:#000; color:#fff;float:right;margin:15px 80px 0px 0px;}
+        .Layer{width:100%; height:1000%; background: #000; position:absolute;top:0px;
+            fillter:Alpha(opacity=60);-moz-opacity: 0.6; opacity: 0.6; z-index: 100; display: none;}
+        .button_trailer {
+        background-color: black;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+}
     </style>
 
 
