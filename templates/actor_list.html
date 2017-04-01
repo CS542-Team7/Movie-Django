@@ -33,7 +33,7 @@
             $(".click_Show").click(function(){
                 $(".Layer").show();//show layer
                 $("#TrailerWindow").show();//show videoWindow
-
+                $('video').trigger('play');
                 tm();
             });
 
@@ -48,8 +48,11 @@
             }
 
             $("a.close").click(function(){
+                $('video').trigger('pause');
                 $("#TrailerWindow").hide();//hide
                 $(".Layer").hide();//hide
+
+
             });
         </script>
 
