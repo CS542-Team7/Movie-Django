@@ -15,8 +15,11 @@
         <p>Year: {{ object.year }}</p>
         <p>Release Date: {{ object.date }}</p>
         <p>Rating: {{ object.rate }}</p>
-        <p><a href="http://www.imdb.com/title/{{ object.movieid }}" target="_self">See in IMDB</a></p>
-        <p><a href="{{ object.trailer }}" target="_blank">Play Trailer</a></p>
+        <p><a href="http://www.imdb.com/title/{{ object.movieid }}" target="_blank">See in IMDB</a></p>
+         <p id="Trailer:"> Trailer</p>
+        <video id="playTrailer" width="320" height="240" controls>
+        <source src="{{ object.trailer }}" type="video/mp4">
+        </video>
         <p>Plot Summary:"{{ object.plot }}"</p>
         <h2>Main actors in {{ object.title }}:</h2>
         <hr>
