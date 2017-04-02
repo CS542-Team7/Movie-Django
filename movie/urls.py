@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^actor_detail/(?P<id>.*)', views.detail, {'model': models.Actor}, name='actor_detail'),
     url(r'^search/(?P<pattern>.*)', views.search, name='search'),
     url(r'^favorite/(?P<movie_id>.*)', views.favorite, name='favorite'),
+    url(r'^add/(?P<movie_id>.*)', views.add, name='favorite'),
 ]

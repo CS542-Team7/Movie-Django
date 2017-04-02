@@ -1,21 +1,31 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 from movie.models import *
+from django.http import HttpResponse
+
+
+def add(request, movie_id):
+    if request.is_ajax():
+        history = Favorite.objects.filter(movieid_id=movie_id, username=request.user.get_username())
+        if len(history) == 0:
+            new_record = Favorite(movieid_id=movie_id, username=request.user.get_username())
+            new_record.save()
+        return HttpResponse('success')
 
 
 @csrf_protect
 def detail(request, model, id):
-    if request.POST:
-        history = Favorite.objects.filter(movieid_id=id, username=request.user.get_username())
-        if len(history) == 0:
-            new_record = Favorite(movieid_id=id, username=request.user.get_username())
-            new_record.save()
     items = []
     try:
         if model.get_name() == 'movie':
             label = 'actor'
             object = model.objects.get(movieid=id)
             records = Act.objects.filter(movieid_id=id)
+            if request.user.get_username() != '':
+                favor_list = [str(x).split('|')[1] for x in
+                              Favorite.objects.filter(username=request.user.get_username())]
+                if id in favor_list:
+                    object.flag = 1
             for query in records:
                 for actor in Actor.objects.filter(actorid=query.actorid_id):
                     items.append(actor)
