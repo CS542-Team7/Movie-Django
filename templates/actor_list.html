@@ -13,7 +13,7 @@
         {% endif %}
 
         <!-- Layer -->
-        <div class = "Layer" id="layer"></div>
+        <di v class = "Layer" id="layer"></div>
 
         <p>Year: {{ object.year }}</p>
         <p>Release Date: {{ object.date }}</p>
@@ -21,7 +21,7 @@
         <p><a href="http://www.imdb.com/title/{{ object.movieid }}" target="_blank">See in IMDB</a></p>
         <span class="click_Show"> <button class="button_trailer">Trailer</button></span>
 
-        <div id="TrailerWindow">
+        <div id="TrailerWindow" style="position: fixed;">
             <div id="title">{{ object.title }}
                 <button type="button" class="close" aria-label="Close">
                 <span aria-hidden="true">x</span>
@@ -82,7 +82,7 @@
 
         function tm(){
             var _left = (document.documentElement.clientWidth - $("#TrailerWindow").width())/2;//Get distance of left
-            var _top = (document.documentElement.clientHeight)*0.6;//Get distance of top
+            var _top = (document.documentElement.clientHeight)*0.3;//Get distance of top
             $("#TrailerWindow").css({left:_left,top:_top});
         }
 
