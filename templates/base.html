@@ -101,7 +101,8 @@
 </head>
 
 <body style="background-color:#e6ffe6;">
-<nav class="navbar navbar-default navbar-inverse" role="navigation">
+
+    <nav class="navbar navbar-default navbar-inverse" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -133,8 +134,38 @@
             </ul>
             <form class="navbar-form navbar-left" action="/" method="post">
                 {% csrf_token %}
-                <input type="text" name="title" class="form-control" placeholder="Search Movies or Actors"/>
+
+                <input type="text" name="title" class="form-control" placeholder="Search Movies or Actors" onkeyup="showResult(this.value)"/>
                 <input type="submit" class="btn btn-default" name="Search" value="Submit"/>
+                <div class = "searchlistdiv" style = "user-select: none; display: none;" aria-expanded="false" >
+                    <div class="search-row-label">Movies</div>
+                    <div class="search-row" id=":mx" style="user-select: none;">
+                        <a style="display: block; user-select: none;" href="/topic/19906833">
+                        </a>
+                    </div>
+                    <div class="search-row" id=":my" style="user-select: none;">
+                        <a style="display: block; user-select: none;" href="/topic/19906833">
+                        </a>
+                    </div>
+                    <div class="search-row" id=":mz" style="user-select: none;">
+                        <a style="display: block; user-select: none;" href="/topic/19906833">
+                        </a>
+                    </div>
+                    <div class="search-row-label">Actors</div>
+                    <div class="search-row" id=":ax" style="user-select: none;">
+                        <a style="display: block; user-select: none;" href="/topic/19906833">
+                        </a>
+                    </div>
+                    <div class="search-row" id=":ay" style="user-select: none;">
+                        <a style="display: block; user-select: none;" href="/topic/19906833">
+                        </a>
+                    </div>
+                    <div class="search-row" id=":az" style="user-select: none;">
+                        <a style="display: block; user-select: none;" href="/topic/19906833">
+                        </a>
+                    </div>
+                </div>
+
             </form>
 
             <ul class="nav navbar-nav navbar-right">
@@ -197,15 +228,41 @@
                     </li>
                 {% endif %}
             </ul>
-
-
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-{% block mainbody %}
+    <script>
+        //Not finish yet
+        var searchRequest = null;
+        $(function(){
+            var minlength = 2;
+            $(".searchlistdiv").keyup(function(){
+                var that = this,
+                    value = $(this).val();
+                if(value.length >= minlength){
+                    if (searchRequest != null)
+                        searchRequest.abort();
+                    searchRequest = $.ajax({
+                        type:"GET",
+                        url: "search/",
+                        data:{
+
+                        },
+                        dataType:"text",
+                        success: function(msg){
+
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+    {% block mainbody %}
     {% load static %}
     <img border="0" src="{% static "images/movie.jpg" %}" width="1280" height="720">
 {% endblock %}
+
+
 </body>
 
 </html>
