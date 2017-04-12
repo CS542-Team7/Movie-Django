@@ -4,11 +4,20 @@ from movie.models import *
 from django.http import HttpResponse
 
 
-def add(request, movie_id):
+def add_seen(request, movie_id):
     if request.is_ajax():
-        history = Favorite.objects.filter(movieid_id=movie_id, username=request.user.get_username())
+        history = Seen.objects.filter(movieid_id=movie_id, username=request.user.get_username())
         if len(history) == 0:
-            new_record = Favorite(movieid_id=movie_id, username=request.user.get_username())
+            new_record = Seen(movieid_id=movie_id, username=request.user.get_username())
+            new_record.save()
+        return HttpResponse('success')
+
+
+def add_expect(request, movie_id):
+    if request.is_ajax():
+        history = Expect.objects.filter(movieid_id=movie_id, username=request.user.get_username())
+        if len(history) == 0:
+            new_record = Expect(movieid_id=movie_id, username=request.user.get_username())
             new_record.save()
         return HttpResponse('success')
 
@@ -22,10 +31,14 @@ def detail(request, model, id):
             object = model.objects.get(movieid=id)
             records = Act.objects.filter(movieid_id=id)
             if request.user.get_username() != '':
-                favor_list = [str(x).split('|')[1] for x in
-                              Favorite.objects.filter(username=request.user.get_username())]
-                if id in favor_list:
+                seen_list = [str(x).split('|')[1] for x in
+                             Seen.objects.filter(username=request.user.get_username())]
+                expect_list = [str(y).split('|')[1] for y in
+                               Expect.objects.filter(username=request.user.get_username())]
+                if id in seen_list:
                     object.flag = 1
+                if id in expect_list:
+                    object.flag = 2
             for query in records:
                 for actor in Actor.objects.filter(actorid=query.actorid_id):
                     items.append(actor)
@@ -74,16 +87,31 @@ def search(request, pattern):
 
 
 @csrf_protect
-def favorite(request, movie_id):
+def seen(request, movie_id):
     if request.POST:
         try:
-            d = Favorite.objects.get(username=request.user.get_username(), movieid_id=movie_id)
+            d = Seen.objects.get(username=request.user.get_username(), movieid_id=movie_id)
             d.delete()
         except:
             return render(request, '404.html')
-    records = Favorite.objects.filter(username=request.user.get_username())
+    records = Seen.objects.filter(username=request.user.get_username())
     movies = []
     for record in records:
         movie_id = str(record).split('|')[1]
         movies.append(Movie.objects.get(movieid=movie_id))
-    return render(request, 'favorite.html', {'items': movies, 'number': len(movies)})
+    return render(request, 'seen.html', {'items': movies, 'number': len(movies)})
+
+
+def expect(request, movie_id):
+    if request.POST:
+        try:
+            d = Expect.objects.get(username=request.user.get_username(), movieid_id=movie_id)
+            d.delete()
+        except:
+            return render(request, '404.html')
+    records = Expect.objects.filter(username=request.user.get_username())
+    movies = []
+    for record in records:
+        movie_id = str(record).split('|')[1]
+        movies.append(Movie.objects.get(movieid=movie_id))
+    return render(request, 'expect.html', {'items': movies, 'number': len(movies)})

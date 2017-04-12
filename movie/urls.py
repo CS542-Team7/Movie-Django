@@ -8,6 +8,8 @@ urlpatterns = [
     url(r'^movie_detail/(?P<id>.*)', views.detail, {'model': models.Movie}, name='movie_detail'),
     url(r'^actor_detail/(?P<id>.*)', views.detail, {'model': models.Actor}, name='actor_detail'),
     url(r'^search/(?P<pattern>.*)', views.search, name='search'),
-    url(r'^favorite/(?P<movie_id>.*)', views.favorite, name='favorite'),
-    url(r'^add/(?P<movie_id>.*)', views.add, name='favorite'),
+    url(r'^seen/(?P<movie_id>.*)', views.seen, name='seen'),
+    url(r'^add_seen/(?P<movie_id>.*)', views.add_seen, name='seen'),
+    url(r'^expect/(?P<movie_id>.*)', views.expect, name='expect'),
+    url(r'^add_expect/(?P<movie_id>.*)', views.add_expect, name='expect'),
 ]

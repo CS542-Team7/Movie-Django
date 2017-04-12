@@ -6,25 +6,48 @@
         <h1>{{ object.title }}</h1>
 
         {% if  user.is_authenticated %}
-            {% if  object.flag %}
-                <button class="button add_button" style="background-color: #f44336;color: white;cursor: not-allowed">In
-                    your Favorite
+            {% if  object.flag == 1 %}
+                <button class="button add_button_seen" style="background-color: #f44336;color: white;cursor: not-allowed">In
+                    your Seen List
+                </button>
+            {% elif  object.flag == 2 %}
+                <button class="button add_button_expect" style="background-color: #f44336;color: white;cursor: not-allowed">In
+                    your Expect List
                 </button>
             {% else %}
-                <button class="button add_button">Add to Favorite</button>
+                <button class="button add_button_seen" >Add to Seen</button>
+                <button class="button add_button_expect" >Add to Expect</button>
             {% endif %}
         {% endif %}
 
+
         <script>
             $(document).ready(function () {
-                $(".add_button").click(function () {
-                    $.get("/movie/add/{{ object.movieid }}", function () {
-                        $(".add_button").css({
+                $(".add_button_seen").click(function () {
+                    $.get("/movie/add_seen/{{ object.movieid }}", function () {
+                        $(".add_button_seen").css({
                             'background-color': '#f44336',
                             'color': 'white',
                             'cursor': 'not-allowed'
                         });
-                        $(".add_button").html('In your Favorite');
+                        $(".add_button_seen").html('In your Seen List');
+                        $(".add_button_expect").hide();
+                    });
+                });
+            });
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                $(".add_button_expect").click(function () {
+                    $.get("/movie/add_expect/{{ object.movieid }}", function () {
+                        $(".add_button_expect").css({
+                            'background-color': '#f44336',
+                            'color': 'white',
+                            'cursor': 'not-allowed'
+                        });
+                        $(".add_button_expect").html('In your Expect List');
+                        $(".add_button_seen").hide();
                     });
                 });
             });
@@ -100,7 +123,7 @@
 
         function tm() {
             var _left = (document.documentElement.clientWidth - $("#TrailerWindow").width()) / 2;//Get distance of left
-            var _top = (document.documentElement.clientHeight) * 0.3;//Get distance of top
+            var _top = (document.documentElement.clientHeight) * 0.15;//Get distance of top
             $("#TrailerWindow").css({left: _left, top: _top});
         }
 

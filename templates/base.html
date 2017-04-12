@@ -70,7 +70,7 @@
             cursor: pointer;
         }
 
-        .add_button {
+        .add_button_seen {
             background-color: white;
             color: black;
             border: 2px solid #f44336;
@@ -78,7 +78,20 @@
             border-radius: 12px;
         }
 
-        .add_button:hover {
+        .add_button_seen:hover {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .add_button_expect {
+            background-color: white;
+            color: black;
+            border: 2px solid #f44336;
+            padding: 10px 10px;
+            border-radius: 12px;
+        }
+
+        .add_button_expect:hover {
             background-color: #f44336;
             color: white;
         }
@@ -170,9 +183,21 @@
 
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
-                    <li><p class="navbar-text" style="color:#fff9fe;">Welcome, {{ username }} <a href="/movie/favorite/"
-                                                                                                 target="_self">Favorite
-                        List</a> <a href="/user/logout/">Logout</a></p></li>
+                    <li>
+                        <p class="navbar-text" style="color:#fff9fe;">
+                            Welcome,{{ username }}
+                            <li class="dropdown">
+                            <a href="http://bootsnipp-env.elasticbeanstalk.com/iframe/DV3m4#" class="dropdown-toggle"
+                             data-toggle="dropdown">myMovies<span class="caret"></span></a>
+                             <ul class="dropdown-menu" role="menu">
+                            <li><a href="/movie/seen/">Seen List</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/movie/expect/">Expect List</a></li>
+                             </ul>
+                             </li>
+                            <a href="/user/logout/">Logout</a>
+                        </p>
+                    </li>
                 {% else %}
                     {% if message %}
                         <li><p class="navbar-text" style="color:red;">{{ message }}</p></li>

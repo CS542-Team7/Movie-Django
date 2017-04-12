@@ -40,7 +40,17 @@ class Act(models.Model):
         return self.actorid.actorid + '|' + self.movieid.movieid
 
 
-class Favorite(models.Model):
+
+
+class Seen(models.Model):
+    username = models.CharField(max_length=150)
+    movieid = models.ForeignKey('Movie', default=1, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.username + '|' + self.movieid.movieid
+
+
+class Expect(models.Model):
     username = models.CharField(max_length=150)
     movieid = models.ForeignKey('Movie', default=1, on_delete=models.CASCADE)
 
