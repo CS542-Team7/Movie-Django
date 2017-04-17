@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 from movie.models import *
 from django.http import HttpResponse
+import json
 
 
 def add_seen(request, movie_id):
@@ -10,7 +11,10 @@ def add_seen(request, movie_id):
         if len(history) == 0:
             new_record = Seen(movieid_id=movie_id, username=request.user.get_username())
             new_record.save()
-        return HttpResponse('success')
+            return HttpResponse('1')
+        else:
+            history.delete()
+            return HttpResponse('0')
 
 
 def add_expect(request, movie_id):
@@ -19,7 +23,10 @@ def add_expect(request, movie_id):
         if len(history) == 0:
             new_record = Expect(movieid_id=movie_id, username=request.user.get_username())
             new_record.save()
-        return HttpResponse('success')
+            return HttpResponse('2')
+        else:
+            history.delete()
+            return HttpResponse('0')
 
 
 @csrf_protect
@@ -84,6 +91,20 @@ def search(request, pattern):
     return render(request, 'searchresult.html',
                   {'items1': movies, 'search1': pattern, 'number1': len(movies), 'items2': actors, 'search2': pattern,
                    'number2': len(actors)})
+
+
+def search_suggest(request, str):
+    movies = Movie.objects.filter(title__contains=str)
+    actors = Actor.objects.filter(name__contains=str)
+    movie_list, actor_list = [], []
+    num = 3 if len(movies) > 3 else len(movies)
+    for i in range(num):
+        movie_list.append({'movieid': movies[i].movieid, 'poster': movies[i].poster, 'title': movies[i].title})
+    num = 3 if len(actors) > 3 else len(actors)
+    for i in range(num):
+        actor_list.append({'actorid': actors[i].actorid, 'photo': actors[i].photo, 'name': actors[i].name})
+    result = {'movie': movie_list, 'actor': actor_list}
+    return HttpResponse(json.dumps(result, ensure_ascii=False))
 
 
 @csrf_protect

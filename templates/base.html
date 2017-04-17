@@ -70,7 +70,7 @@
             cursor: pointer;
         }
 
-        .add_button_seen {
+        .add_button {
             background-color: white;
             color: black;
             border: 2px solid #f44336;
@@ -78,20 +78,7 @@
             border-radius: 12px;
         }
 
-        .add_button_seen:hover {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .add_button_expect {
-            background-color: white;
-            color: black;
-            border: 2px solid #f44336;
-            padding: 10px 10px;
-            border-radius: 12px;
-        }
-
-        .add_button_expect:hover {
+        .add_button:hover {
             background-color: #f44336;
             color: white;
         }
@@ -108,6 +95,25 @@
             background-color: #008CBA;
             color: white;
         }
+
+        .suggest {
+            color: #31708f;
+            border-color: #bce8f1;
+            border: 1px;
+            padding: 4px;
+            cursor: pointer;
+        }
+
+        .suggest:hover {
+            background-color: #d9edf7;
+        }
+
+        .no_suggest {
+            text-align: center;
+            color: #31708f;
+            background-color: #d9edf7;
+            border-color: #bce8f1
+        }
     </style>
 
 
@@ -115,7 +121,7 @@
 
 <body style="background-color:#e6ffe6;">
 
-    <nav class="navbar navbar-default navbar-inverse" role="navigation">
+<nav class="navbar navbar-default navbar-inverse" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -125,14 +131,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">MOVIESpy</a>
+            <a class="navbar-brand" href="/"><span class=" 	glyphicon glyphicon-home"></span> Home</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="/movie/movie_all/1">Movies</a></li>
-                <li><a href="/movie/actor_all/1">Actors</a></li>
+                <li><a href="/movie/movie_all/1"><span class="glyphicon glyphicon-film"></span> Movies</a></li>
+                <li><a href="/movie/actor_all/1"><span class="glyphicon glyphicon-user"></span> Actors</a></li>
                 <li class="dropdown">
                     <a href="http://bootsnipp-env.elasticbeanstalk.com/iframe/DV3m4#" class="dropdown-toggle"
                        data-toggle="dropdown">Visualization<span class="caret"></span></a>
@@ -148,35 +154,15 @@
             <form class="navbar-form navbar-left" action="/" method="post">
                 {% csrf_token %}
 
-                <input type="text" name="title" class="form-control" placeholder="Search Movies or Actors" onkeyup="showResult(this.value)"/>
+                <input type="text" name="title" class="form-control" placeholder="Search Movies or Actors"
+                       onkeyup="showResult(this.value)" size="45" autocomplete="off"/>
                 <input type="submit" class="btn btn-default" name="Search" value="Submit"/>
-                <div class = "searchlistdiv" style = "user-select: none; display: none;" aria-expanded="false" >
-                    <div class="search-row-label">Movies</div>
-                    <div class="search-row" id=":mx" style="user-select: none;">
-                        <a style="display: block; user-select: none;" href="/topic/19906833">
-                        </a>
-                    </div>
-                    <div class="search-row" id=":my" style="user-select: none;">
-                        <a style="display: block; user-select: none;" href="/topic/19906833">
-                        </a>
-                    </div>
-                    <div class="search-row" id=":mz" style="user-select: none;">
-                        <a style="display: block; user-select: none;" href="/topic/19906833">
-                        </a>
-                    </div>
-                    <div class="search-row-label">Actors</div>
-                    <div class="search-row" id=":ax" style="user-select: none;">
-                        <a style="display: block; user-select: none;" href="/topic/19906833">
-                        </a>
-                    </div>
-                    <div class="search-row" id=":ay" style="user-select: none;">
-                        <a style="display: block; user-select: none;" href="/topic/19906833">
-                        </a>
-                    </div>
-                    <div class="search-row" id=":az" style="user-select: none;">
-                        <a style="display: block; user-select: none;" href="/topic/19906833">
-                        </a>
-                    </div>
+
+                <div class="searchlistdiv"
+                     style="position:absolute;top:42px;left:415px;user-select:none;display:none;width: 320px;"
+                     aria-expanded="false">
+                    <div class="search-movie">Movie:</div>
+                    <div class="search-actor">Actor:</div>
                 </div>
 
             </form>
@@ -186,17 +172,17 @@
                     <li>
                         <p class="navbar-text" style="color:#fff9fe;">
                             Welcome,{{ username }}
-                            <li class="dropdown">
-                            <a href="http://bootsnipp-env.elasticbeanstalk.com/iframe/DV3m4#" class="dropdown-toggle"
-                             data-toggle="dropdown">myMovies<span class="caret"></span></a>
-                             <ul class="dropdown-menu" role="menu">
+                    <li class="dropdown">
+                        <a href="http://bootsnipp-env.elasticbeanstalk.com/iframe/DV3m4#" class="dropdown-toggle"
+                           data-toggle="dropdown">myMovies<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
                             <li><a href="/movie/seen/">Seen List</a></li>
                             <li class="divider"></li>
                             <li><a href="/movie/expect/">Expect List</a></li>
-                             </ul>
-                             </li>
-                            <a href="/user/logout/">Logout</a>
-                        </p>
+                        </ul>
+                    </li>
+                    <a href="/user/logout/">Logout</a>
+                    </p>
                     </li>
                 {% else %}
                     {% if message %}
@@ -256,38 +242,48 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-    <script>
-        //Not finish yet
-        var searchRequest = null;
-        $(function(){
-            var minlength = 2;
-            $(".searchlistdiv").keyup(function(){
-                var that = this,
-                    value = $(this).val();
-                if(value.length >= minlength){
-                    if (searchRequest != null)
-                        searchRequest.abort();
-                    searchRequest = $.ajax({
-                        type:"GET",
-                        url: "search/",
-                        data:{
+<script>
+    $(".form-control").bind('blur', function () {
+        setTimeout(function () {
+            $(".searchlistdiv").hide();
+        }, 100);
+    });
+    function showResult(str) {
+        if (str.length == 0) {
+            $(".searchlistdiv").hide();
+            return;
+        }
+        var path = "/movie/search_suggest/" + str;
+        $.get(path, function (data) {
+            data = JSON.parse(data);
+            $(".search-movie").siblings().not(".search-actor").remove();
+            for (var i = 0; i < data.movie.length; i++) {
+                var img = "<img src='" + data.movie[i].poster + "' width='60' height='75'></img>";
+                var link = "<div class='suggest' onclick=\"location.href='/movie/movie_detail/"
+                    + data.movie[i].movieid + "'\">" + img + "<b>" + data.movie[i].title + "</b></div>";
+                $(".search-movie").after(link)
+            }
+            if (data.movie.length == 0)
+                $(".search-movie").after("<div class='no_suggest'><b>No suggestion!</b></div>")
 
-                        },
-                        dataType:"text",
-                        success: function(msg){
+            for (var i = 0; i < data.actor.length; i++) {
+                var img = "<img src='" + data.actor[i].photo + "' width='60' height='75'></img>";
+                var link = "<div class='suggest' onclick=\"location.href='/movie/actor_detail/"
+                    + data.actor[i].actorid + "'\">" + img + "<b>" + data.actor[i].name + "</b></div>";
+                $(".search-actor").after(link)
+            }
+            if (data.actor.length == 0)
+                $(".search-actor").after("<div class='no_suggest'><b>No suggestion!</b></div>")
 
-                        }
-                    })
-                }
-            })
-        })
-    </script>
-    {% block mainbody %}
+            $(".searchlistdiv").show();
+        });
+    }
+</script>
+{% block mainbody %}
     {% load static %}
-    <img border="0" src="{% static "images/movie.jpg" %}" width="1280" height="720">
+    <img border="0" class="img-responsive img-rounded" style="position: relative; left:20px;"
+         src="{% static "images/movie.jpg" %}" width="1280" height="720">
 {% endblock %}
 
-
 </body>
-
 </html>
