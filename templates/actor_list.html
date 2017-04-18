@@ -56,15 +56,30 @@
                 });
             });
         </script>
+        <script>
+            $(function () {
+                $('span.stars').stars();
+            });
+            $.fn.stars = function () {
+                return $(this).each(function () {
+                    $(this).html($('<span />').width(Math.max(0, (Math.min(10, parseFloat($(this).html())))) * 8));
+                });
+            }
+
+        </script>
 
         <!-- Layer -->
         <div class="Layer" id="layer"></div>
 
         <p>Year: {{ object.year }}</p>
         <p>Release Date: {{ object.date }}</p>
+        <span class="stars">{{ object.rate }}</span>
         <p>Rating: {{ object.rate }}</p>
-        <p><a href="http://www.imdb.com/title/{{ object.movieid }}" target="_blank">See in IMDB</a></p>
-        <span class="click_Show"> <button class="button_trailer">Trailer</button></span>
+        <p><a href="http://www.imdb.com/title/{{ object.movieid }}" target="_blank">See in IMDB <span
+                class="glyphicon glyphicon-new-window"></span></a></p>
+        <span class="click_Show"> <button class="button_trailer">
+            <span class="glyphicon glyphicon-play-circle"></span> Trailer</button>
+        </span>
 
         <div id="TrailerWindow" style="position: fixed;">
             <div id="title">{{ object.title }}

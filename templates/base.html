@@ -11,6 +11,7 @@
     <script src="{% static "js/jquery-1.10.2.min.js.download" %}"></script>
     <script src="{% static "js/bootstrap.min.js.download" %}"></script>
     <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/bootstrap-social.css" %}" rel="stylesheet">
     <style type="text/css">
         #TrailerWindow {
             width: 600px;
@@ -114,59 +115,25 @@
             background-color: #d9edf7;
             border-color: #bce8f1
         }
+
+        {% load static %}
+        span.stars, span.stars span {
+            display: block;
+            background: url({% static "images/stars.png" %}) 0 -16px repeat-x;
+            width: 80px;
+            height: 16px;
+        }
+
+        span.stars span {
+            background-position: 0 0;
+        }
     </style>
 
 
 </head>
 
-<body style="background-color:#e6ffe6;">
-<script>
-    function statusChangeCallback(response) {
-        if (response.status === 'connected') {
-            FB.api('/me', function (response) {
-                $("#status").html("Welcome, "+response.name);
-            });
-        }
-        else {
-            $("#status").html("please log in!");
-        }
-    }
+<body style="background-color:#FAFAD2;">
 
-    function checkLoginState() {
-        FB.getLoginStatus(function (response) {
-            statusChangeCallback(response);
-        });
-    }
-
-    window.fbAsyncInit = function () {
-        FB.init({
-            appId: '283394035432709',
-            cookie: true,
-            xfbml: true,  // parse social plugins on this page
-            version: 'v2.8' // use graph api version 2.8
-        });
-
-        FB.getLoginStatus(function (response) {
-            statusChangeCallback(response);
-        });
-
-    };
-
-    (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-
-    function logout() {
-        FB.logout(function (response) {
-            statusChangeCallback(response);
-        });
-    }
-</script>
 
 <nav class="navbar navbar-default navbar-inverse" role="navigation">
     <div class="container-fluid">
@@ -228,7 +195,7 @@
                             <li><a href="/movie/expect/">Expect List</a></li>
                         </ul>
                     </li>
-                    <a href="/user/logout/">Logout</a>
+                    <button class="btn btn-tumblr" onclick="logout()">Logout</button>
                     </p>
                     </li>
                 {% else %}
@@ -245,10 +212,11 @@
                                     <div class="col-md-12">
                                         Login via
                                         <div class="social-buttons">
-                                            <a href="http://www.facebook.com" class="btn btn-fb"><i
-                                                    class="fa fa-facebook"></i> Facebook</a>
-                                            <a href="http://www.twitter.com" class="btn btn-tw"><i
-                                                    class="fa fa-twitter"></i> Twitter</a>
+                                            {#                                            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">#}
+                                            {#                                            </fb:login-button>#}
+                                            <button type="button" class="btn btn-fb" onclick="login()"><span
+                                                    class="fa fa-facebook"></span> Facebook
+                                            </button>
                                         </div>
                                         or
                                         <form class="form" role="form" method="post" action="/user/login/"
@@ -263,9 +231,9 @@
                                                 <label class="sr-only" for="exampleInputPassword2">Password</label>
                                                 <input name="password" type="password" class="form-control"
                                                        id="exampleInputPassword2" placeholder="Password">
-                                                <div class="help-block text-right"><a
-                                                        href="http://bootsnipp-env.elasticbeanstalk.com/iframe/DV3m4">Forget
-                                                    the password ?</a></div>
+                                                {#                                                <div class="help-block text-right"><a#}
+                                                {#                                                        href="http://bootsnipp-env.elasticbeanstalk.com/iframe/DV3m4">Forget#}
+                                                {#                                                    the password ?</a></div>#}
                                             </div>
                                             <div class="form-group">
                                                 <input type="submit" class="btn btn-primary btn-block" value="Sign in"/>
@@ -289,6 +257,68 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+<script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '283394035432709',
+            cookie: true,
+            xfbml: true,  // parse social plugins on this page
+            version: 'v2.8' // use graph api version 2.8
+        });
+
+        FB.getLoginStatus(function (response) {
+        });
+
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    function logout() {
+        FB.logout(function () {
+        });
+        $.get("/user/logout/", function () {
+            location.reload();
+        });
+        {#        location.href = "/user/logout/";#}
+    }
+    function login() {
+        FB.login(function (response) {
+            if (response.status === 'connected') {
+                FB.api('/me', function (response) {
+                    $.post("user/facebook/", {
+                        csrfmiddlewaretoken: getCookie('csrftoken'),
+                        username: response.name,
+                        password: "facebook"
+                    }, function () {
+                        location.reload();
+                    });
+                });
+            }
+        });
+    }
+</script>
 <script>
     $(".form-control").bind('blur', function () {
         setTimeout(function () {
