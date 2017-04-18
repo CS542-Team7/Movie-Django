@@ -94,15 +94,28 @@ def search(request, pattern):
 
 
 def search_suggest(request, str):
-    movies = Movie.objects.filter(title__contains=str)
-    actors = Actor.objects.filter(name__contains=str)
     movie_list, actor_list = [], []
-    num = 3 if len(movies) > 3 else len(movies)
-    for i in range(num):
-        movie_list.append({'movieid': movies[i].movieid, 'poster': movies[i].poster, 'title': movies[i].title})
-    num = 3 if len(actors) > 3 else len(actors)
-    for i in range(num):
-        actor_list.append({'actorid': actors[i].actorid, 'photo': actors[i].photo, 'name': actors[i].name})
+    # movie
+    movies = Movie.objects.filter(title__istartswith=str).order_by('-rate')
+    if len(movies) > 3:
+        for i in range(3):
+            movie_list.append({'movieid': movies[i].movieid, 'poster': movies[i].poster, 'title': movies[i].title})
+    else:
+        movies = Movie.objects.filter(title__contains=str).order_by('-rate')
+        num = 3 - len(movie_list) if len(movies) > 3 - len(movie_list) else len(movies)
+        for i in range(num):
+            movie_list.append({'movieid': movies[i].movieid, 'poster': movies[i].poster, 'title': movies[i].title})
+    # actor
+    actors = Actor.objects.filter(name__istartswith=str)
+    if len(actors) > 3:
+        for i in range(3):
+            actor_list.append({'actorid': actors[i].actorid, 'photo': actors[i].photo, 'name': actors[i].name})
+    else:
+        actors = Actor.objects.filter(name__contains=str)
+        num = 3 - len(actor_list) if len(actors) > 3 - len(actor_list) else len(actors)
+        for i in range(num):
+            actor_list.append({'actorid': actors[i].actorid, 'photo': actors[i].photo, 'name': actors[i].name})
+    # result in a dictionary
     result = {'movie': movie_list, 'actor': actor_list}
     return HttpResponse(json.dumps(result, ensure_ascii=False))
 

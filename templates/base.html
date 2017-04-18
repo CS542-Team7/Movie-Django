@@ -120,6 +120,53 @@
 </head>
 
 <body style="background-color:#e6ffe6;">
+<script>
+    function statusChangeCallback(response) {
+        if (response.status === 'connected') {
+            FB.api('/me', function (response) {
+                $("#status").html("Welcome, "+response.name);
+            });
+        }
+        else {
+            $("#status").html("please log in!");
+        }
+    }
+
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '283394035432709',
+            cookie: true,
+            xfbml: true,  // parse social plugins on this page
+            version: 'v2.8' // use graph api version 2.8
+        });
+
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    function logout() {
+        FB.logout(function (response) {
+            statusChangeCallback(response);
+        });
+    }
+</script>
 
 <nav class="navbar navbar-default navbar-inverse" role="navigation">
     <div class="container-fluid">
@@ -155,11 +202,11 @@
                 {% csrf_token %}
 
                 <input type="text" name="title" class="form-control" placeholder="Search Movies or Actors"
-                       onkeyup="showResult(this.value)" size="45" autocomplete="off"/>
+                       onkeyup="showResult(this.value)" size="55" autocomplete="off"/>
                 <input type="submit" class="btn btn-default" name="Search" value="Submit"/>
 
                 <div class="searchlistdiv"
-                     style="position:absolute;top:42px;left:415px;user-select:none;display:none;width: 320px;"
+                     style="position:absolute;top:42px;left:415px;user-select:none;display:none;width: 380px;"
                      aria-expanded="false">
                     <div class="search-movie">Movie:</div>
                     <div class="search-actor">Actor:</div>
@@ -171,7 +218,7 @@
                 {% if user.is_authenticated %}
                     <li>
                         <p class="navbar-text" style="color:#fff9fe;">
-                            Welcome,{{ username }}
+                            Welcome, {{ user.username }}
                     <li class="dropdown">
                         <a href="http://bootsnipp-env.elasticbeanstalk.com/iframe/DV3m4#" class="dropdown-toggle"
                            data-toggle="dropdown">myMovies<span class="caret"></span></a>
