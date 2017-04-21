@@ -20,7 +20,7 @@ var pJS = function(tag_id, params){
     },
     particles: {
       number: {
-        value: 60,
+        value: 80,
         density: {
           enable: true,
           value_area: 2500
@@ -152,7 +152,7 @@ var pJS = function(tag_id, params){
     mode_bubble_size: pJS.interactivity.modes.bubble.size,
     mode_repulse_distance: pJS.interactivity.modes.repulse.distance
   };
-  console.log(pJS)
+
 
 
   pJS.fn.retinaInit = function(){
@@ -501,8 +501,6 @@ var pJS = function(tag_id, params){
   pJS.fn.particlesCreate = function(){
     console.log(pJS)
     for(var i = 0; i < pJS.particles.number.value; i++) {
-      console.log(1)
-      console.log(pJS.particles.number.value)
       pJS.particles.array.push(new pJS.fn.particle(pJS.particles.color, pJS.particles.opacity.value));
     }
   };
