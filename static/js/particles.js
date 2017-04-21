@@ -8,7 +8,7 @@
 /* ----------------------------------------------- */
 
 var pJS = function(tag_id, params){
-
+  
   var canvas_el = document.querySelector('#'+tag_id+' > .particles-js-canvas-el');
 
   /* particles.js variables with default values */
@@ -20,10 +20,10 @@ var pJS = function(tag_id, params){
     },
     particles: {
       number: {
-        value: 400,
+        value: 60,
         density: {
           enable: true,
-          value_area: 800
+          value_area: 2500
         }
       },
       color: {
@@ -55,11 +55,11 @@ var pJS = function(tag_id, params){
         }
       },
       size: {
-        value: 20,
+        value: 8,
         random: false,
         anim: {
           enable: false,
-          speed: 20,
+          speed: 10,
           size_min: 0,
           sync: false
         }
@@ -152,6 +152,7 @@ var pJS = function(tag_id, params){
     mode_bubble_size: pJS.interactivity.modes.bubble.size,
     mode_repulse_distance: pJS.interactivity.modes.repulse.distance
   };
+  console.log(pJS)
 
 
   pJS.fn.retinaInit = function(){
@@ -498,7 +499,10 @@ var pJS = function(tag_id, params){
 
 
   pJS.fn.particlesCreate = function(){
+    console.log(pJS)
     for(var i = 0; i < pJS.particles.number.value; i++) {
+      console.log(1)
+      console.log(pJS.particles.number.value)
       pJS.particles.array.push(new pJS.fn.particle(pJS.particles.color, pJS.particles.opacity.value));
     }
   };
@@ -813,6 +817,7 @@ var pJS = function(tag_id, params){
               var size = p.radius + (pJS.interactivity.modes.bubble.size*ratio);
               if(size >= 0){
                 p.radius_bubble = size;
+
               }
             }else{
               var dif = p.radius - pJS.interactivity.modes.bubble.size,

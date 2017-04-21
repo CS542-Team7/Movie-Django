@@ -62,8 +62,6 @@ def detail(request, model, id):
 
 
 def whole_list(request, model, page):
-    print(model)
-    print(page)
     if page:
         page = int(page)
     else:
@@ -154,5 +152,17 @@ def expect(request, movie_id):
 
 
 def network(request):
-    print("hello")
+    movie_records = Movie.objects.filter()
+    actor_records = Actor.objects.filter()
+    movies = []
+    actors = []
+    for record in movie_records:
+        movie_id = str(record).split('|')[0]
+        print(movie_id)
+
+    for record in actor_records:
+        actor_id = str(record).split('|')[0]
+        actors.append(Actor)
+        print(actor_id)
+
     return render(request, 'network.html')
