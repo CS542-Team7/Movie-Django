@@ -86,6 +86,18 @@ def whole_list(request, model, page):
 
 def search(request, pattern):
     pattern = pattern.replace("%20", " ")
+    if pattern != 'None':
+        try:
+            search_word = Search.objects.get(word=pattern)
+            times = search_word.times
+            search_word.delete()
+            new_record = Search(word=pattern, times=times + 1)
+            new_record.save()
+        except:
+            new_record = Search(word=pattern, times=1)
+            new_record.save()
+    test = Search.objects.all()
+    print(test)
     movies = Movie.objects.filter(title__contains=pattern)
     actors = Actor.objects.filter(name__contains=pattern)
     return render(request, 'searchresult.html',
