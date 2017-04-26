@@ -9,6 +9,11 @@ def add_seen(request, movie_id):
     if request.is_ajax():
         history = Seen.objects.filter(movieid_id=movie_id, username=request.user.get_username())
         if len(history) == 0:
+            movie = Popularity.objects.get(movieid_id=movie_id)
+            weight = movie.weight
+            movie.delete()
+            new_record = Popularity(movieid_id=movie_id, weight=weight + 3)
+            new_record.save()
             new_record = Seen(movieid_id=movie_id, username=request.user.get_username())
             new_record.save()
             return HttpResponse('1')
@@ -21,6 +26,11 @@ def add_expect(request, movie_id):
     if request.is_ajax():
         history = Expect.objects.filter(movieid_id=movie_id, username=request.user.get_username())
         if len(history) == 0:
+            movie = Popularity.objects.get(movieid_id=movie_id)
+            weight = movie.weight
+            movie.delete()
+            new_record = Popularity(movieid_id=movie_id, weight=weight + 3)
+            new_record.save()
             new_record = Expect(movieid_id=movie_id, username=request.user.get_username())
             new_record.save()
             return HttpResponse('2')
@@ -33,7 +43,16 @@ def add_expect(request, movie_id):
 def detail(request, model, id):
     items = []
     try:
-        if model.get_name() == 'movie':
+        if model.get_name() == 'movie' and id != 'None':
+            try:
+                d = Popularity.objects.get(movieid_id=id)
+                weight = d.weight
+                d.delete()
+                new_record = Popularity(movieid_id=id, weight=weight + 1)
+                new_record.save()
+            except:
+                new_record = Popularity(movieid_id=id, weight=1)
+                new_record.save()
             label = 'actor'
             object = model.objects.get(movieid=id)
             records = Act.objects.filter(movieid_id=id)
@@ -86,18 +105,6 @@ def whole_list(request, model, page):
 
 def search(request, pattern):
     pattern = pattern.replace("%20", " ")
-    if pattern != 'None':
-        try:
-            search_word = Search.objects.get(word=pattern)
-            times = search_word.times
-            search_word.delete()
-            new_record = Search(word=pattern, times=times + 1)
-            new_record.save()
-        except:
-            new_record = Search(word=pattern, times=1)
-            new_record.save()
-    test = Search.objects.all()
-    print(test)
     movies = Movie.objects.filter(title__contains=pattern)
     actors = Actor.objects.filter(name__contains=pattern)
     return render(request, 'searchresult.html',

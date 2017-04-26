@@ -56,9 +56,9 @@ class Expect(models.Model):
         return self.username + '|' + self.movieid.movieid
 
 
-class Search(models.Model):
-    word = models.CharField(max_length=30)
-    times = models.IntegerField(default=0)
+class Popularity(models.Model):
+    movieid = models.ForeignKey('Movie', default=' ', on_delete=models.CASCADE)
+    weight = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.word + '|' + str(self.times)
+        return self.movieid.movieid + '|' + str(self.weight)
