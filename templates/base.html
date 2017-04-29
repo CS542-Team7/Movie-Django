@@ -55,7 +55,7 @@
                 <input type="submit" class="btn btn-default" name="Search" value="Submit"/>
 
                 <div class="searchlistdiv"
-                     style="position:absolute;top:42px;left:415px;user-select:none;display:none;width: 380px;"
+                     style="position:absolute;top:42px;left:295px;user-select:none;display:none;width: 380px;"
                      aria-expanded="false">
                     <div class="search-movie">Movie:</div>
                     <div class="search-actor">Actor:</div>
@@ -236,7 +236,7 @@
 {% block mainbody %}
     {% load static %}
     <div style=" margin-left: 1%;">
-        <p><b>Recently Popular:</b></p>
+        <p style ="color: white"><b>Recently Popular:</b></p>
         {% for movie in list %}
             <a href="/movie/movie_detail/{{ movie.movieid }}">
                 <img id="poster" class="img-rounded" src="{{ movie.poster }}" width="125" height="180">
